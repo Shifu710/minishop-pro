@@ -1,65 +1,59 @@
-import Image from "next/image";
+import Link from "next/link";
+import { ArrowRight, BarChart3, CalendarCheck, Package, ShieldCheck, ShoppingBag, Smartphone } from "lucide-react";
+import { MiniAppPreview } from "@/components/mini/MiniAppPreview";
 
-export default function Home() {
+const features = [
+  ["Mini program H5 preview", "Chinese-first mobile commerce and booking flow.", Smartphone],
+  ["Product and service sales", "Products, services, packages, cart, and checkout simulation.", ShoppingBag],
+  ["Booking workflow", "Service slots, booking status, and admin-side booking management.", CalendarCheck],
+  ["Admin dashboard", "Products, orders, customers, promotions, analytics, and settings.", BarChart3],
+  ["Prisma data model", "Schema prepared for Supabase PostgreSQL and production upgrade.", Package],
+  ["Safe payment simulation", "No real WeChat Pay or merchant credentials in portfolio mode.", ShieldCheck],
+] as const;
+
+export default function LandingPage() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main className="admin-bg min-h-screen">
+      <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
+        <Link className="flex items-center gap-3 font-black" href="/">
+          <span className="grid h-11 w-11 place-items-center rounded-2xl bg-cyan-400/15 text-cyan-200">MS</span>
+          MiniShop Pro
+        </Link>
+        <div className="flex gap-3">
+          <Link className="btn-secondary hidden sm:inline-flex" href="/case-study/minishop-pro">Case study</Link>
+          <Link className="btn-primary" href="/login">Try admin demo</Link>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </nav>
+      <section className="mx-auto grid max-w-7xl items-center gap-10 px-6 py-14 lg:grid-cols-[1fr_430px]">
+        <div>
+          <p className="inline-flex rounded-full border border-cyan-300/20 bg-cyan-400/10 px-3 py-1 text-sm text-cyan-100">小店智选 / China-market portfolio project</p>
+          <h1 className="mt-6 max-w-4xl text-4xl font-black tracking-tight md:text-6xl">WeChat Mini Program E-commerce & Booking System</h1>
+          <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">MiniShop Pro helps small businesses sell products, manage service bookings, track orders, and operate from one modern admin dashboard.</p>
+          <p className="mt-3 max-w-2xl text-slate-400">小店智选帮助本地商家通过小程序完成商品销售、服务预约、订单管理和数据分析。</p>
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <Link className="btn-primary" href="/login">Try Admin Demo <ArrowRight size={18} /></Link>
+            <Link className="btn-secondary" href="/mini-preview">Open H5 Preview</Link>
+            <Link className="btn-secondary" href="/case-study/minishop-pro">View Case Study</Link>
+          </div>
         </div>
-      </main>
-    </div>
+        <MiniAppPreview />
+      </section>
+      <section className="mx-auto max-w-7xl px-6 py-12">
+        <div className="grid gap-5 md:grid-cols-3">
+          {features.map(([title, body, Icon]) => (
+            <div className="dark-panel p-5" key={title}>
+              <Icon className="text-cyan-300" />
+              <h2 className="mt-4 font-black">{title}</h2>
+              <p className="mt-2 text-sm leading-6 text-slate-400">{body}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+      <section className="mx-auto max-w-5xl px-6 py-16 text-center">
+        <h2 className="text-3xl font-black">Demo mode is safe for recruiters</h2>
+        <p className="mt-3 text-slate-400">The project uses mock data, simulated payment, and no real WeChat credentials. Real WeChat Login and WeChat Pay are documented as future secure server-side integrations.</p>
+        <Link className="btn-primary mt-6" href="/login">Open dashboard</Link>
+      </section>
+    </main>
   );
 }

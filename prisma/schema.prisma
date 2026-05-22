@@ -1,0 +1,133 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model AdminUser {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  role      String   @default("admin")
+  avatarUrl String?
+  createdAt DateTime @default(now())
+}
+
+model Customer {
+  id         String    @id @default(cuid())
+  name       String
+  phone      String?
+  email      String?
+  avatarUrl  String?
+  language   String    @default("zh")
+  totalSpent Float     @default(0)
+  tags       String[]
+  notes      String?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  orders     Order[]
+  bookings   Booking[]
+}
+
+model Category {
+  id        String    @id @default(cuid())
+  name      String
+  nameZh    String
+  icon      String?
+  sortOrder Int       @default(0)
+  isActive  Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  products  Product[]
+}
+
+model Product {
+  id              String      @id @default(cuid())
+  name            String
+  nameZh          String
+  type            String
+  categoryId      String
+  category        Category    @relation(fields: [categoryId], references: [id])
+  price           Float
+  originalPrice   Float?
+  stock           Int         @default(0)
+  description     String
+  descriptionZh   String?
+  images          String[]
+  tags            String[]
+  status          String      @default("active")
+  isFeatured      Boolean     @default(false)
+  salesCount      Int         @default(0)
+  rating          Float       @default(4.8)
+  serviceDuration Int?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  orderItems      OrderItem[]
+  bookings        Booking[]
+}
+
+model Order {
+  id            String      @id @default(cuid())
+  customerId    String
+  customer      Customer    @relation(fields: [customerId], references: [id])
+  orderNo       String      @unique
+  totalAmount   Float
+  paymentStatus String      @default("pending")
+  orderStatus   String      @default("pending")
+  channel       String      @default("wechat-mini-program")
+  notes         String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  items         OrderItem[]
+  booking       Booking?
+}
+
+model OrderItem {
+  id        String   @id @default(cuid())
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id])
+  productId String
+  product   Product  @relation(fields: [productId], references: [id])
+  quantity  Int
+  price     Float
+  subtotal  Float
+}
+
+model Booking {
+  id            String   @id @default(cuid())
+  customerId    String
+  customer      Customer @relation(fields: [customerId], references: [id])
+  productId     String
+  product       Product  @relation(fields: [productId], references: [id])
+  orderId       String?  @unique
+  order         Order?   @relation(fields: [orderId], references: [id])
+  bookingTime   DateTime
+  duration      Int
+  status        String   @default("pending")
+  assignedStaff String?
+  notes         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Promotion {
+  id          String    @id @default(cuid())
+  title       String
+  titleZh     String
+  description String?
+  imageUrl    String?
+  type        String
+  status      String    @default("active")
+  startDate   DateTime?
+  endDate     DateTime?
+  createdAt   DateTime  @default(now())
+}
+
+model Favorite {
+  id         String   @id @default(cuid())
+  customerId String
+  productId  String
+  createdAt  DateTime @default(now())
+}

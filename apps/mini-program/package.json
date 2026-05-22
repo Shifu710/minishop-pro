@@ -1,0 +1,19 @@
+{
+  "name": "@minishop/mini-program",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Taro React mini program source scaffold for MiniShop Pro",
+  "scripts": {
+    "dev:h5": "taro build --type h5 --watch",
+    "build:h5": "taro build --type h5",
+    "build:weapp": "taro build --type weapp"
+  },
+  "dependencies": {
+    "@tarojs/components": "^4.0.0",
+    "@tarojs/runtime": "^4.0.0",
+    "@tarojs/taro": "^4.0.0",
+    "@nutui/nutui-taro": "^3.0.0",
+    "react": "^18.2.0",
+    "zustand": "^5.0.0"
+  }
+}
