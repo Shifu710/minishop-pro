@@ -32,7 +32,8 @@ export default function LandingPage() {
           <p className="mt-3 max-w-2xl text-slate-400">小店智选帮助本地商家通过小程序完成商品销售、服务预约、订单管理和数据分析。</p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Link className="btn-primary" href="/login">Try Admin Demo <ArrowRight size={18} /></Link>
-            <Link className="btn-secondary" href="/mini-preview">Open H5 Preview</Link>
+            <Link className="btn-secondary" href="/t/demo-shop">Open Public Shop</Link>
+            <Link className="btn-secondary" href="/mini-preview">H5 Preview</Link>
             <Link className="btn-secondary" href="/case-study/minishop-pro">View Case Study</Link>
           </div>
         </div>

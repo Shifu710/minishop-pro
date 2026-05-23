@@ -131,3 +131,37 @@ model Favorite {
   productId  String
   createdAt  DateTime @default(now())
 }
+
+model Merchant {
+  id              String           @id @default(cuid())
+  name            String
+  nameZh          String?
+  logo            String?
+  description     String?
+  descriptionZh   String?
+  contact         String?
+  customerService String?
+  shopSuffix      String           @unique
+  defaultStyle    String           @default("style1")
+  shopStatus      String           @default("active")
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  domains         MerchantDomain[]
+}
+
+model MerchantDomain {
+  id            String   @id @default(cuid())
+  merchantId    String
+  merchant      Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  domain        String
+  suffix        String   @unique
+  defaultStyle  String   @default("style1")
+  isPrimary     Boolean  @default(false)
+  status        String   @default("active")
+  remark        String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@unique([domain, suffix])
+  @@index([merchantId])
+}

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BarChart3, CalendarCheck, Home, Images, LayoutGrid, Package, Settings, ShoppingBag, Users } from "lucide-react";
+import { BarChart3, CalendarCheck, Globe, Home, Images, LayoutGrid, Package, Settings, ShoppingBag, Users } from "lucide-react";
 
 const nav = [
   ["/dashboard", "Overview", Home],
@@ -13,6 +13,7 @@ const nav = [
   ["/dashboard/customers", "Customers", Users],
   ["/dashboard/promotions", "Promotions", Images],
   ["/dashboard/analytics", "Analytics", BarChart3],
+  ["/dashboard/domains", "Shop Links", Globe],
   ["/dashboard/settings", "Settings", Settings],
 ] as const;
 
