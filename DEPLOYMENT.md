@@ -26,7 +26,7 @@ This document is the canonical deployment and release record for the **Public H5
 | **Repository** | `Shifu710/minishop-pro` |
 | **Production branch** | `main` |
 | **Feature branch** | `feature/public-shop-h5-pc-styles` |
-| **Latest production commit** | `3411fff` — fix: checklist gaps - image fallback, empty states, admin validation |
+| **Latest production commit** | `53bbedf` — chore: sync package-lock; includes docs `80f5794`, fixes `3411fff`, feature `8ff8176` |
 | **Feature commit** | `8ff8176` — feat: add public shop styles and domain management |
 | **Build fix commit** | `8ae2a92` — fix: run prisma generate on install and build |
 | **Pushed to GitHub** | Yes |
@@ -185,7 +185,9 @@ npm run build
 |------|--------|------|
 | — | `8ff8176` | Public shop, styles, domain admin, APIs, migration |
 | — | `8ae2a92` | `postinstall` + build run `prisma generate` (Vercel fix) |
-| — | `3411fff` | Image fallback, empty states, admin form validation, README |
+| — | `3411fff` | Image fallback, empty states, admin form validation |
+| — | `80f5794` | DEPLOYMENT.md + README clarification for GitHub |
+| — | `53bbedf` | package-lock sync; feature branch aligned with main |
 
 ---
 

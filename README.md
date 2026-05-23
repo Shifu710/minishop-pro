@@ -160,7 +160,7 @@ DEPLOYMENT.md                Deployment report (GitHub + Vercel)
 |------|--------|
 | **Branch** | `main` (production) |
 | **Feature branch** | `feature/public-shop-h5-pc-styles` (merged) |
-| **Latest commit** | `3411fff` |
+| **Latest commit** | `53bbedf` |
 | **Vercel** | Ready — https://minishop-pro.vercel.app |
 
 See **[DEPLOYMENT.md](./DEPLOYMENT.md)** for commit hashes, smoke tests, env checklist, and troubleshooting.
