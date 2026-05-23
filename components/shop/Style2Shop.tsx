@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import { useMemo, useState } from "react";
+import { ProductImage } from "./ProductImage";
 import type { PublicProduct, PublicShopPayload } from "@/lib/shop/types";
 
 type Tab = "home" | "category" | "cart" | "orders" | "profile";
@@ -30,7 +30,7 @@ export function Style2Shop({ data }: Props) {
   function productCard(product: PublicProduct) {
     return (
       <div className="mini-card overflow-hidden" key={product.id}>
-        <Image
+        <ProductImage
           alt={product.nameZh}
           className="h-28 w-full object-cover"
           height={160}
@@ -64,8 +64,10 @@ export function Style2Shop({ data }: Props) {
     );
   }
 
+  const hasProducts = data.products.length > 0;
+
   return (
-    <div className="phone-frame mx-auto flex w-full max-w-[390px] flex-col md:max-w-[420px]">
+    <div className="phone-frame mx-auto flex w-full max-w-[390px] flex-col overflow-x-hidden md:max-w-[420px]">
       <div className="bg-gradient-to-br from-cyan-600 to-teal-600 px-5 pb-5 pt-8 text-white">
         <p className="text-xs opacity-80">Mini App Style · Live API Data</p>
         <h1 className="mt-2 text-2xl font-black">{shopName}</h1>
@@ -99,12 +101,18 @@ export function Style2Shop({ data }: Props) {
               ))}
             </div>
             <SectionTitle title="Featured" />
-            <div className="grid grid-cols-2 gap-3">
-              {data.products
-                .filter((p) => p.isFeatured)
-                .slice(0, 4)
-                .map((item) => productCard(item))}
-            </div>
+            {!hasProducts ? (
+              <div className="mini-card p-6 text-center text-sm text-slate-500">
+                No products available yet.
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 gap-3">
+                {data.products
+                  .filter((p) => p.isFeatured)
+                  .slice(0, 4)
+                  .map((item) => productCard(item))}
+              </div>
+            )}
             <SectionTitle title="Services" />
             <div className="grid gap-3">
               {data.products
@@ -112,7 +120,7 @@ export function Style2Shop({ data }: Props) {
                 .slice(0, 2)
                 .map((item) => (
                   <div className="mini-card flex gap-3 p-3" key={item.id}>
-                    <Image
+                    <ProductImage
                       alt={item.nameZh}
                       className="h-20 w-20 shrink-0 rounded-xl object-cover"
                       height={120}
@@ -163,7 +171,7 @@ export function Style2Shop({ data }: Props) {
             {cartItems.length ? (
               cartItems.map((item) => (
                 <div className="mini-card flex gap-3 p-3" key={item.id}>
-                  <Image
+                  <ProductImage
                     alt={item.nameZh}
                     className="h-16 w-16 rounded-xl object-cover"
                     height={96}

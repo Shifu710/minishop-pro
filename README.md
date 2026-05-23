@@ -45,6 +45,23 @@ npm run dev
 
 Open `http://localhost:3000`.
 
+## Public Shop (H5 / PC)
+
+Visitors can open a merchant shop without login:
+
+```txt
+/t/demo-shop
+/t/demo-shop?style=style1
+/t/demo-shop?style=style2
+/t/7IOvjtH
+```
+
+- **Style 1** — responsive catalog layout (WeCatalog-style reference)
+- **Style 2** — mini-program tab UI with live API data
+- Style priority: URL `?style=` → localStorage → merchant default
+
+Admin manages suffixes and domains at `/dashboard/domains` (login required).
+
 ## H5 Preview
 
 The recruiter-friendly H5 preview is available at:
@@ -53,7 +70,7 @@ The recruiter-friendly H5 preview is available at:
 /mini-preview
 ```
 
-This is a browser simulation of the WeChat Mini Program build so recruiters can explore the mini-program user flow without WeChat DevTools.
+This embeds the live public shop (`demo-shop`) in Style 2. Full public routes are at `/t/{suffix}`.
 
 ## Taro Mini Program Source
 
@@ -100,6 +117,22 @@ npm run prisma:seed
 ```
 
 Phase 1 uses typed mock data first. The Prisma schema is ready for Supabase PostgreSQL.
+
+### Merchant domain migration
+
+Migration `20260523120000_add_merchant_domains` adds:
+
+- `Merchant` — shop profile, `shopSuffix`, `defaultStyle`, `shopStatus`
+- `MerchantDomain` — custom domain, suffix, primary flag, status
+
+Apply on Supabase/PostgreSQL:
+
+```bash
+npx prisma migrate deploy
+npm run prisma:seed
+```
+
+Without `DATABASE_URL`, domain records use an in-memory seed (`demo-shop`, `7IOvjtH`) so public shops work on Vercel without a database.
 
 ## Mock Data / Demo Mode
 

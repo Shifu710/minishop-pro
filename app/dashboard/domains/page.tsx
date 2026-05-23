@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Copy, ExternalLink, Pencil, Plus, Trash2 } from "lucide-react";
 import { buildPublicShopUrl, getDefaultAppDomain } from "@/lib/shop/constants";
+import { validateDomain, validateSuffix } from "@/lib/shop/suffix";
 import type { MerchantDomainRecord, ShopStyle, ShopStatus } from "@/lib/shop/types";
 
 type FormState = {
@@ -33,6 +34,7 @@ export default function DomainsPage() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState<FormState>(emptyForm());
   const [saving, setSaving] = useState(false);
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -105,8 +107,21 @@ export default function DomainsPage() {
     setFormOpen(true);
   }
 
+  function validateForm(): boolean {
+    const errors: Record<string, string> = {};
+    if (!form.merchantName.trim()) errors.merchantName = "Merchant name is required.";
+    if (!form.merchantId.trim()) errors.merchantId = "Merchant ID is required.";
+    const suffixCheck = validateSuffix(form.suffix);
+    if (!suffixCheck.valid) errors.suffix = suffixCheck.error ?? "Invalid suffix.";
+    const domainCheck = validateDomain(form.domain);
+    if (!domainCheck.valid) errors.domain = domainCheck.error ?? "Invalid domain.";
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (!validateForm()) return;
     setSaving(true);
     setError(null);
     try {
@@ -193,21 +208,27 @@ export default function DomainsPage() {
                 value={form.merchantId}
               />
             </Field>
-            <Field label="Domain *">
+            <Field error={formErrors.domain} label="Domain *">
               <input
                 className="w-full rounded-xl border px-3 py-2"
                 onChange={(e) => setForm((f) => ({ ...f, domain: e.target.value }))}
+                pattern="(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,}"
                 placeholder="your-domain.com"
                 required
+                title="Valid domain, e.g. shop.example.com"
                 value={form.domain}
               />
             </Field>
-            <Field label="Shop suffix *">
+            <Field error={formErrors.suffix} label="Shop suffix *">
               <input
                 className="w-full rounded-xl border px-3 py-2"
+                maxLength={50}
+                minLength={3}
                 onChange={(e) => setForm((f) => ({ ...f, suffix: e.target.value }))}
+                pattern="[a-zA-Z0-9_-]{3,50}"
                 placeholder="demo-shop"
                 required
+                title="3-50 characters: letters, numbers, hyphen, underscore"
                 value={form.suffix}
               />
             </Field>
@@ -364,11 +385,20 @@ export default function DomainsPage() {
   );
 }
 
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
+function Field({
+  label,
+  children,
+  error,
+}: {
+  label: string;
+  children: React.ReactNode;
+  error?: string;
+}) {
   return (
     <label className="grid gap-1 text-sm">
       <span className="font-semibold text-slate-700">{label}</span>
       {children}
+      {error ? <span className="text-xs text-red-600">{error}</span> : null}
     </label>
   );
 }

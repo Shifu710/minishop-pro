@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useMemo, useState } from "react";
 import { Copy, Headphones, Share2 } from "lucide-react";
+import { ProductImage } from "./ProductImage";
 import type { PublicShopPayload } from "@/lib/shop/types";
 
 type Props = {
@@ -29,8 +30,11 @@ export function Style1Shop({ data, shareUrl }: Props) {
     }
   }
 
+  const hasCategories = data.categories.length > 0;
+  const hasProducts = data.products.length > 0;
+
   return (
-    <div className="min-h-screen bg-[#f3f5f8]">
+    <div className="min-h-screen overflow-x-hidden bg-[#f3f5f8]">
       <header className="border-b border-slate-200 bg-white">
         <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-8 md:flex-row md:items-center md:justify-between lg:px-8">
           <div className="flex items-start gap-4">
@@ -95,26 +99,36 @@ export function Style1Shop({ data, shareUrl }: Props) {
         ) : null}
 
         <section className="mb-6">
-          <div className="flex gap-2 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            <CategoryTab
-              active={activeCategory === "all"}
-              label="All"
-              onClick={() => setActiveCategory("all")}
-            />
-            {data.categories.map((cat) => (
+          {hasCategories ? (
+            <div className="flex gap-2 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               <CategoryTab
-                active={activeCategory === cat.id}
-                icon={cat.icon}
-                key={cat.id}
-                label={cat.nameZh}
-                onClick={() => setActiveCategory(cat.id)}
+                active={activeCategory === "all"}
+                label="All"
+                onClick={() => setActiveCategory("all")}
               />
-            ))}
-          </div>
+              {data.categories.map((cat) => (
+                <CategoryTab
+                  active={activeCategory === cat.id}
+                  icon={cat.icon}
+                  key={cat.id}
+                  label={cat.nameZh}
+                  onClick={() => setActiveCategory(cat.id)}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="rounded-2xl bg-white px-4 py-3 text-sm text-slate-500">
+              No categories yet. Products will appear here when added.
+            </div>
+          )}
         </section>
 
         <section>
-          {filteredProducts.length === 0 ? (
+          {!hasProducts ? (
+            <div className="rounded-2xl bg-white p-12 text-center text-slate-500">
+              No products available yet. Please check back later.
+            </div>
+          ) : filteredProducts.length === 0 ? (
             <div className="rounded-2xl bg-white p-12 text-center text-slate-500">
               No products in this category yet.
             </div>
@@ -125,7 +139,7 @@ export function Style1Shop({ data, shareUrl }: Props) {
                   className="overflow-hidden rounded-2xl bg-white shadow-sm transition hover:shadow-md"
                   key={product.id}
                 >
-                  <Image
+                  <ProductImage
                     alt={product.nameZh}
                     className="h-44 w-full object-cover"
                     height={220}
